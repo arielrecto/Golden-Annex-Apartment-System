@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\User;
+use App\Notifications\NewAnnouncement;
 use Illuminate\Http\Request;
 
 class AnnoucementController extends Controller
@@ -34,16 +36,30 @@ class AnnoucementController extends Controller
     public function store(Request $request)
     {
 
+
+        $users = User::role('tenant')->get();
+
         $request->validate([
             'title' => 'required',
             'description' => 'required'
         ]);
 
 
-       Announcement::create([
+       $appointment = Announcement::create([
         'title' => $request->title,
         'description' => $request->description
        ]);
+
+
+       $content = [
+        'title' => $appointment->title,
+        'content' => $appointment->description
+       ];
+
+
+       foreach($users as $user){
+            $user->notify(new NewAnnouncement($content));
+       }
 
 
        return back()->with(['message' => 'Announcement Posted!']);
@@ -78,6 +94,12 @@ class AnnoucementController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $announcement = Announcement::find($id);
+
+        $announcement->delete();
+
+
+
+        return back()->with(['message' => 'Item Deleted!']);
     }
 }

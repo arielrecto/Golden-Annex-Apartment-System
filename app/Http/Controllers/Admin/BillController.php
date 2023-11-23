@@ -66,6 +66,6 @@ class BillController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
     }
 }

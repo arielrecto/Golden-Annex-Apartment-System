@@ -16,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('amount');
+            $table->string('status')->default('Unpaid');
+            $table->string('balance');
             $table->string('due_date');
-            $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Room::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

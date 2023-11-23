@@ -16,7 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('ref_number');
             $table->string('image');
-            $table->foreignIdFor(Bill::class);
+            $table->string('amount');
+            $table->foreignIdFor(Bill::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

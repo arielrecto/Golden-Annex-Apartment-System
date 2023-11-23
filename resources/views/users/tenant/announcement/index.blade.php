@@ -50,6 +50,7 @@
                             <tr>
                                 <td colspan="4">
                                     <div class="flex justify-center text-gray-800">
+
                                         <h1 class="text-lg">
                                             No Announcement
                                         </h1>

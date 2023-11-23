@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Notifications\MaintenanceRequest;
 use Illuminate\Support\Facades\Auth;
 
 class MaintenanceController extends Controller
@@ -41,17 +43,27 @@ class MaintenanceController extends Controller
 
        $user = Auth::user();
 
+       $adminRole = User::role('admin')->first();
+
 
        $imageName = 'MNTNNC-' . uniqid() . '.' . $request->image->extension();
        $dir = $request->image->storeAs('/maintenance', $imageName, 'public');
 
 
-       Maintenance::create([
+      $maintenance = Maintenance::create([
         'description' => $request->description,
         'time' => $request->time,
         'image' =>  asset('/storage/' . $dir),
         'room_id' => $user->room->id
        ]);
+
+        $content = [
+            'title' => 'New Maintenance',
+            'content' => $maintenance->description
+        ];
+
+
+        $adminRole->notify(new MaintenanceRequest($content));
 
 
        return back()->with(['message' => 'Request Sent']);
@@ -86,6 +98,11 @@ class MaintenanceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $maintenance = Maintenance::find($id);
+
+        $maintenance->delete();
+
+
+        return back()->with(['message' => 'Item Deleted !']);
     }
 }

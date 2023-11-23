@@ -1,5 +1,12 @@
 <x-tenant-layout>
     <div class="w-full h-full flex flex-col gap-2 relative" x-data="printPDF">
+        @if (Session::has('reject'))
+        <div role="alert" class="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{{Session::get('reject')}}</span>
+          </div>
+        @endif
+
         <h1>
             Bill -
             <span class="font-bold text-lg text-gray-800 capitalize">
@@ -19,9 +26,13 @@
 
                 </h1>
                 <div class="flex items-center gap-2">
+
+                    @if($bill->balance !== 0)
                     <button class="btn btn-xs btn-accent" @click="toggle = !toggle">
                         <i class="fi fi-rr-money-bill-wave"></i>
                     </button>
+
+                    @endif
                     <a href="{{route('pdf.bill', ['bill' => $bill->id])}}">
                         <button class="btn btn-xs bg-blue-500 hover:bg-blue-600 text-white duration-700 border-none" >
                             <i class="fi fi-rr-print"></i>
@@ -48,6 +59,24 @@
                             Amount:
                             <span style="color:black">
                                 {{ $bill->amount }}
+                            </span>
+
+                        </span>
+                    </h1>
+                    <h1>
+                        <span>
+                            Status:
+                            <span style="color:black">
+                                {{ $bill->status }}
+                            </span>
+
+                        </span>
+                    </h1>
+                    <h1>
+                        <span>
+                            Balance:
+                            <span style="color:black">
+                                {{ $bill->balance }}
                             </span>
 
                         </span>
@@ -81,18 +110,59 @@
             </div>
 
 
-            @if($bill->payment !== null)
-            <div class="flex flex-col w-full gap-2">
-                <h1 class="text-4xl font-bold text-gray-800">Payment</h1>
-                <div class="flex gap-2">
-                    <a href="{{$bill->payment->image}}" class="venobox">
-                        <img src="{{$bill->payment->image}}" alt="" srcset="" class="object object-center h-32 w-auto">
-                    </a>
+            <div class="overflow-x-auto h-full w-full">
+                <table class="table table-xs">
+                    <thead class="text-gray-800">
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Ref Number</th>
+                             <th>Amount</th>
+                          {{--  <th>Tenant</th> --}}
+                            {{-- <th>Status</th>
+                            <th>Tenant</th>
+                            <th>Household People</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                        <h1>Ref # : {{$bill->payment->ref_number}}</h1>
-                </div>
+
+                       @forelse ($bill->payments()->get() as $payment)
+                            <tr>
+                                <th>1</th>
+                                <td>
+                                    <a href="{{$payment->image}}" class="venobox">
+                                        <img src="{{$payment->image}}" alt="" srcset="" class="h-12 w-auto object object-center">
+                                    </a>
+
+                                </td>
+                                <td>{{$payment->ref_number}}</td>
+                                <td>{{$payment->amount}}</td>
+                                {{-- <td>{{$bill->room->user->name ?? 'Previos Tenant'}}</td> --}}
+                                {{-- <td>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{route('pdf.bill', ['bill' => $bill->id])}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-700 duration-700 text-white">
+                                            <i class="fi fi-rr-print"></i>
+                                        </a>
+                                        <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                    </div>
+                                </td> --}}
+                            </tr>
+                        @empty
+                            <tr>
+                                <td  colspan="3">
+                                    <div class="flex justify-center text-gray-800">
+                                      <h1 class="text-lg">
+                                        No Payments
+                                      </h1>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+
+                    </tbody>
+                </table>
             </div>
-            @endif
         </div>
 
         <div class="absolute z-10 w-full h-full " x-show="toggle" x-cloak @click.outside="toggle = !toggle">
@@ -108,6 +178,15 @@
                         @if($errors->has('ref_number'))
                         <p class="text-xs text-red-500">
                             {{$errors->first('ref_number')}}
+                        </p>
+                        @endif
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="">Amount</label>
+                        <input type="text" class="input w-full bg-gray-100" name="amount" placeholder="Amount">
+                        @if($errors->has('amount'))
+                        <p class="text-xs text-red-500">
+                            {{$errors->first('amount')}}
                         </p>
                         @endif
                     </div>

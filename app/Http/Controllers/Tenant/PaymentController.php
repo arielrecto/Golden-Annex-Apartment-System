@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Bill;
 
 class PaymentController extends Controller
 {
@@ -34,15 +35,38 @@ class PaymentController extends Controller
             'image'
         ]);
 
+        $bill = Bill::find($request->bill_id);
+
+
+        if($request->amount > $bill->amount){
+            return back()->with(['reject' => 'Payment Amount is Exceed in Bill amount']);
+        }
 
 
         $imageName = 'PYMNT-' . uniqid() . '.' . $request->image->extension();
         $dir = $request->image->storeAs('/payment', $imageName, 'public');
 
-        Payment::create([
+       Payment::create([
             'ref_number' => $request->ref_number,
             'image' =>  asset('/storage/' . $dir),
+            'amount'=> $request->amount,
             'bill_id' => $request->bill_id
+        ]);
+
+        $totalPayments = $bill->payments()->get()->sum('amount');
+        $balance = $this->calculateBalancePaymentBill($bill->amount, $totalPayments);
+        if($balance !== 0){
+            $bill->update([
+                'status' => 'balance',
+                'balance' => $balance
+            ]);
+
+            return back()->with(['message' => 'Payment success has balance ₱' . $balance]);
+        }
+
+        $bill->update([
+            'status' => 'Paid',
+            'balance' => $balance
         ]);
 
 
@@ -79,5 +103,10 @@ class PaymentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    private function calculateBalancePaymentBill($billAmount, $paymentAmount){
+        $total = $billAmount - $paymentAmount;
+
+        return $total;
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('middle_name')->default('N\A');
             $table->string('age');
             $table->string('sex');
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

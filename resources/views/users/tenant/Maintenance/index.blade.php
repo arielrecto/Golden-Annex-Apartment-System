@@ -4,7 +4,8 @@
             <h1 class="text-lg font-bold text-gray-800">
                 Maintenance
             </h1>
-            <a href="{{route('tenant.maintenance.create')}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
+            <a href="{{ route('tenant.maintenance.create') }}"
+                class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
                 <span>
                     <i class="fi fi-rr-add"></i>
                 </span>
@@ -37,8 +38,9 @@
                                 <th>1</th>
 
                                 <td>
-                                    <a href="{{$maintenance->image}}" class="venobox">
-                                        <img src="{{$maintenance->image}}" alt="" srcset="" class="h-14 w-auto object object-center">
+                                    <a href="{{ $maintenance->image }}" class="venobox">
+                                        <img src="{{ $maintenance->image }}" alt="" srcset=""
+                                            class="h-14 w-auto object object-center">
                                     </a>
 
                                 </td>
@@ -48,7 +50,14 @@
 
                                 <td>
                                     <div class="flex items-center">
-                                        <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+
+                                        <form
+                                            action="{{ route('tenant.maintenance.destroy', ['maintenance' => $maintenance->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

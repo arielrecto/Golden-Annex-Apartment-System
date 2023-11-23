@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->string('image');
-            $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Room::class)->constrained()->onDelete('cascade');
             $table->string('time');
             $table->timestamps();
         });

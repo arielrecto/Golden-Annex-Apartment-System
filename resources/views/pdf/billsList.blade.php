@@ -44,6 +44,8 @@
             <tr>
                 <th>name</th>
                 <th>Amount</th>
+                <th>Status</th>
+                <th>Balance</th>
                 <th>Room Number</th>
                 <th>Due Date</th>
             </tr>
@@ -55,6 +57,12 @@
                     </td>
                     <td>
                         {{$bill->amount}} pesos
+                    </td>
+                    <td>
+                        {{$bill->status}}
+                    </td>
+                    <td>
+                        {{$bill->balance}}
                     </td>
                     <td>
                         {{$bill->room->room_number}}

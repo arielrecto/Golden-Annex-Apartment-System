@@ -46,6 +46,8 @@
                                 <th></th>
                                 <th>Name</th>
                                 <th>Amount</th>
+                                <th>Status</th>
+                                <th>balance</th>
                                 <th>Due Date</th>
                                 <th>action</th>
                             </tr>
@@ -58,6 +60,8 @@
                                     <th>1</th>
                                     <td>{{ $bill->name }}</td>
                                     <td>&#x20B1 {{ $bill->amount }}</td>
+                                    <td>{{ $bill->status }}</td>
+                                    <td>&#x20B1 {{ $bill->balance }}</td>
                                     <td>{{ $bill->due_date}}</td>
 
                                     <td>

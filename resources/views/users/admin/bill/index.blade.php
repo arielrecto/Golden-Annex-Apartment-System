@@ -22,6 +22,8 @@
                             <th></th>
                             <th>name</th>
                             <th>amount</th>
+                            <th>staus</th>
+                            <th>Balance</th>
                             <th>Room Number</th>
                             <th>Tenant</th>
                             {{-- <th>Status</th>
@@ -37,16 +39,18 @@
                                 <th>1</th>
                                 <td>{{$bill->name}}</td>
                                 <td>{{$bill->amount}}</td>
+                                <td>{{$bill->status}}</td>
+                                <td>{{$bill->balance}}</td>
                                 <td>{{$bill->room->room_number}}</td>
                                 <td>{{$bill->room->user->name ?? 'Previos Tenant'}}</td>
-                                <td>
+                                {{-- <td>
                                     <div class="flex items-center gap-2">
                                         <a href="{{route('pdf.bill', ['bill' => $bill->id])}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-700 duration-700 text-white">
                                             <i class="fi fi-rr-print"></i>
                                         </a>
                                         <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
                                     </div>
-                                </td>
+                                </td>  --}}
                             </tr>
                         @empty
                             <tr>

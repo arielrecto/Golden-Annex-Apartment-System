@@ -13,7 +13,8 @@ class Payment extends Model
     protected $fillable = [
         'ref_number',
         'image',
-        'bill_id'
+        'bill_id',
+        'amount'
     ];
 
     public function bill(){

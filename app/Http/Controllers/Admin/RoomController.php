@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Room;
+use App\Notifications\NewBill;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -86,13 +87,23 @@ class RoomController extends Controller
 
         $room = Room::find($id);
 
-        Bill::create([
+        $user = $room->user;
+
+        $bill = Bill::create([
             'name' => $request->name,
             'amount' => $request->amount,
             'due_date' => $request->due_date,
+            'status' => 'Unpaid',
+            'balance' => $request->amount,
             'room_id' => $room->id
         ]);
 
+        $content = [
+            'title' => 'New Bill ' . $bill->name,
+            'amount' => $request->amount,
+        ];
+
+        $user->notify( new NewBill($content));
 
         return back()->with(['message' => 'Bill Added Successfully']);
     }

@@ -38,7 +38,13 @@
 
                                 <td>
                                     <div class="flex items-center">
-                                        <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+
+                                        <form action="{{route('admin.announcement.destroy', ['announcement' => $announcement->id])}}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                        </form>
+
                                     </div>
                                 </td>
                             </tr>

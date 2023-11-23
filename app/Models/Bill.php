@@ -13,6 +13,8 @@ class Bill extends Model
     protected $fillable = [
         'name',
         'amount',
+        'status',
+        'balance',
         'due_date',
         'room_id',
     ];
@@ -21,7 +23,7 @@ class Bill extends Model
         return $this->belongsTo(Room::class);
     }
 
-    public function payment(){
-        return $this->hasOne(Payment::class);
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
 }
