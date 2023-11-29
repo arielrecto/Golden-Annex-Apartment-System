@@ -52,7 +52,12 @@
                                             <i class="fi fi-rr-eye"></i>
                                         </a>
 
-                                        <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                        <form action="{{route('admin.tenant.destroy', ['tenant' => $tenant->id])}}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                        </form>
+
                                     </div>
                                 </td>
                             </tr>

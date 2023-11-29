@@ -79,7 +79,12 @@ class RoomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $room = Room::find($id);
+
+        $room->delete();
+
+
+        return back()->with(['message' => 'Room Delete Success']);
     }
     public function addBill(Request $request, string $id){
 

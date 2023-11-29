@@ -45,8 +45,10 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('inbox')->as('inbox.')->group(function(){
         Route::get('/', [InboxController::class, 'index'])->name('index');
+        Route::post('/delete/{inbox}', [InboxController::class, 'destroy'])->name('destroy');
         Route::get('/{index}/show', [InboxController::class, 'show'])->name('show');
         Route::post('/email/send', [InboxController::class, 'sendEmail'])->name('emailSend');
+
     });
 
     Route::prefix('pdf')->as('pdf.')->group(function(){

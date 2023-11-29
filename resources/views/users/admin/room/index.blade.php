@@ -40,7 +40,13 @@
                                 <td>{{$room->household_people ?? 'None'}}</td>
                                 <td>
                                     <div class="flex items-center">
-                                        <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+
+                                        <form action="{{route('admin.room.destroy', ['room' => $room->id])}}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-xs btn-error"><i class="fi fi-rr-trash"></i></button>
+                                        </form>
+
                                     </div>
                                 </td>
                             </tr>

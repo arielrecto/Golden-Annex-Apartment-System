@@ -11,8 +11,9 @@
 
 
     <style>
-         .flex-container {
+        /* .flex-container {
             display: flex;
+            flex-wrap: wrap;
         }
 
         .flex-container > div {
@@ -30,18 +31,49 @@
             text-align: center;
             font-weight: bold;
             font-size: large;
-        }
+        } */
     </style>
 </head>
 
 <body>
     <h1 class="header">Golden Annex Apartment - bill</h1>
-    <div class="parentCon">
+
+
+    <table>
+        <tr>
+            <th>name</th>
+            <th>metric type</th>
+            <th>previous reading</th>
+            <th>current reading</th>
+            <th>reading</th>
+            <th>rate</th>
+            <th>amount</th>
+            <th>status</th>
+            <th>balance</th>
+            <th>Due Date</th>
+        </tr>
+        <tr>
+            <th>{{ $bill->id }}</th>
+            <td>{{ $bill->name }}</td>
+            <td>{{ $bill->metric_type ?? '-' }}</td>
+            <td>{{ $bill->previous_reading ?? '-' }}</td>
+            <td>{{ $bill->current_reading ?? '-' }}</td>
+            <td>{{ $bill->reading ?? '-' }}</td>
+            <td>{{ $bill->metric_rate ?? '-' }}</td>
+            <td>{{ $bill->amount }}</td>
+            <td>{{ $bill->status }}</td>
+            <td>{{ $bill->balance }}</td>
+            <td>{{ $bill->due_date }}</td>
+        </tr>
+
+    </table>
+
+    {{-- <div class="flex-container">
         <div>
             <h1 class="c-con"> Name: {{ $bill->name }}</h1>
         </div>
 
-        @if($bill->name !== 'rent')
+        @if ($bill->name !== 'rent')
         <div>
             <h1 class="c-con"> Metric Type: {{ $bill->metric_type ?? '-'}}</h1>
         </div>
@@ -69,7 +101,7 @@
         <div>
             <h1 class="c-con"> Due Date : {{ $bill->due_date }}</h1>
         </div>
-    </div>
+    </div> --}}
 </body>
 
 </html>

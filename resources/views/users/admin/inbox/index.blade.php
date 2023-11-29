@@ -11,11 +11,16 @@
                 <h1 class="text-center w-full">{{$inbox->email}}</h1>
                 <h1 class="text-center w-full">{{$inbox->description}}</h1>
                 <h1 class="text-center w-full">{{$inbox->created_at}}</h1>
-                <h1 class="text-center w-full">
-                    <span class="flex gap-2">
+                <div class="text-center w-full flex gap-2">
+                    <h1 class="flex gap-2">
                         <a href="{{route('inbox.show', ['index' => $inbox->id])}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-700 duration-700 text-white"><i class="fi fi-rr-eye"></i></a>
-                    </span>
-                </h1>
+                    </h1>
+                    <form action="{{route('inbox.destroy', ['inbox' => $inbox->id])}}" method="post">
+                        @csrf
+                        <button class="btn btn-xs btn-error e"><i class="fi fi-rr-trash"></i></button>
+                    </form>
+                </div>
+
             </div>
 
             @empty

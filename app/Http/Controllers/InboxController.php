@@ -81,7 +81,9 @@ class InboxController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $inbox = Inbox::find($id);
+        $inbox->delete();
+        return back();
     }
     public function sendEmail(Request $request){
 

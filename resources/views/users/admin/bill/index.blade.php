@@ -42,7 +42,9 @@
                     <thead class="text-gray-800">
                         <tr>
                             <th></th>
-                            <th>name</th>
+                            <th>Room Number</th>
+                            <th>Tenant</th>
+                            <th>bill</th>
                             <th>metric type</th>
                             <th>previous reading</th>
                             <th>current reading</th>
@@ -51,8 +53,7 @@
                             <th>amount</th>
                             <th>status</th>
                             <th>Balance</th>
-                            <th>Room Number</th>
-                            <th>Tenant</th>
+
                             {{-- <th>Status</th>
                             <th>Tenant</th>
                             <th>Household People</th> --}}
@@ -66,6 +67,8 @@
 
                             <tr>
                                 <th>1</th>
+                                <td>{{ $bill->room->room_number }}</td>
+                                <td>{{ $bill->room->user->name ?? 'Previos Tenant' }}</td>
                                 <td>{{ $bill->name }}</td>
                                 <td>{{ $bill->metric_type ?? '-'}}</td>
                                 <td>{{ $bill->previous_reading ?? '-' }}</td>

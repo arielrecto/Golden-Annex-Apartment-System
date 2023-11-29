@@ -121,6 +121,15 @@ class TenantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tenant = User::find($id);
+
+
+        $tenant->room->update(['status' => 'Available', 'user_id' => null, 'household_people' => null]);
+
+
+        $tenant->delete();
+
+
+        return back()->with(['message' => 'Tenant Removed!']);
     }
 }
