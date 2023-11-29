@@ -17,7 +17,7 @@
                     Total bill
                 </span>
                 <span class="truncate text-5xl tracking-wider text-white font-bold w-5/6 p-5">
-                   {{$billTotal}}
+                    ₱ {{$billTotal}}
                 </span>
             </div>
             <div class="h-32 w-full rounded-lg bg-accent flex flex-col gap-2">
@@ -37,16 +37,21 @@
 
                     </div>
                 </div> --}}
-            <div class="w-1/2 h-96 flex flex-col gap-2">
+            <div class="w-full h-96 flex flex-col gap-2">
                 <h1 class="font-bold text-lg capitalize">Bills</h1>
                 <div class="overflow-x-auto h-full w-5/6">
                     <table class="table table-xs">
                         <thead class="text-gray-800">
                             <tr>
                                 <th></th>
-                                <th>Name</th>
-                                <th>Amount</th>
-                                <th>Status</th>
+                                <th>name</th>
+                                <th>metric type</th>
+                                <th>previous reading</th>
+                                <th>current reading</th>
+                                <th>reading</th>
+                                <th>rate</th>
+                                <th>amount</th>
+                                <th>status</th>
                                 <th>balance</th>
                                 <th>Due Date</th>
                                 <th>action</th>
@@ -57,11 +62,16 @@
 
                             @forelse ($bills as $bill)
                                 <tr class="text-gray-800">
-                                    <th>1</th>
+                                    <th>{{$bill->id}}</th>
                                     <td>{{ $bill->name }}</td>
-                                    <td>&#x20B1 {{ $bill->amount }}</td>
+                                    <td>{{ $bill->metric_type ?? '-'}}</td>
+                                    <td>{{ $bill->previous_reading ?? '-' }}</td>
+                                    <td>{{ $bill->current_reading ?? '-' }}</td>
+                                    <td>{{ $bill->reading ?? '-' }}</td>
+                                    <td>{{ $bill->metric_rate ?? '-' }}</td>
+                                    <td>{{ $bill->amount }}</td>
                                     <td>{{ $bill->status }}</td>
-                                    <td>&#x20B1 {{ $bill->balance }}</td>
+                                    <td>{{ $bill->balance }}</td>
                                     <td>{{ $bill->due_date}}</td>
 
                                     <td>

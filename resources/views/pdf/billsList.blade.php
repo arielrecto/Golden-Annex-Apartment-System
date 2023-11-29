@@ -39,37 +39,38 @@
 <body>
     <h1 class="header">Golden Annex Apartment - bill</h1>
     <div class="parentCon">
-
+        @if ($month !== null)
+            <h1>
+                Month of : {{ $month }}
+            </h1>
+        @endif
         <table>
             <tr>
                 <th>name</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Balance</th>
-                <th>Room Number</th>
+                <th>metric type</th>
+                <th>previous reading</th>
+                <th>current reading</th>
+                <th>reading</th>
+                <th>rate</th>
+                <th>amount</th>
+                <th>status</th>
+                <th>balance</th>
                 <th>Due Date</th>
             </tr>
 
             @foreach ($bills as $bill)
                 <tr>
-                    <td>
-                        {{$bill->name}}
-                    </td>
-                    <td>
-                        {{$bill->amount}} pesos
-                    </td>
-                    <td>
-                        {{$bill->status}}
-                    </td>
-                    <td>
-                        {{$bill->balance}}
-                    </td>
-                    <td>
-                        {{$bill->room->room_number}}
-                    </td>
-                    <td>
-                        {{$bill->due_date}}
-                    </td>
+                    <th>{{$bill->id}}</th>
+                    <td>{{ $bill->name }}</td>
+                    <td>{{ $bill->metric_type ?? '-'}}</td>
+                    <td>{{ $bill->previous_reading ?? '-' }}</td>
+                    <td>{{ $bill->current_reading ?? '-' }}</td>
+                    <td>{{ $bill->reading ?? '-' }}</td>
+                    <td>{{ $bill->metric_rate ?? '-' }}</td>
+                    <td>{{ $bill->amount }}</td>
+                    <td>{{ $bill->status }}</td>
+                    <td>{{ $bill->balance }}</td>
+                    <td>{{ $bill->due_date}}</td>
                 </tr>
             @endforeach
         </table>

@@ -4,7 +4,29 @@
             <h1 class="text-lg font-bold text-gray-800">
                 Bills
             </h1>
-            <a href="{{route('pdf.bills.download')}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
+            <div class="flex items-center w-96">
+                <form action="{{route('admin.bill.index')}}" method="get" class="w-full flex items-center">
+                    {{-- @csrf --}}
+                    <select class="select select-bordered w-full bg-gray-100" name="month">
+                        <option disabled selected>Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4" >April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                      <button class="btn btn-accent">Filter</button>
+                </form>
+            </div>
+            <a href="{{ route('pdf.bills.download') }}?month={{Request::get('month')}}"
+                class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
                 <span>
                     <i class="fi fi-rr-print"></i>
                 </span>
@@ -21,8 +43,13 @@
                         <tr>
                             <th></th>
                             <th>name</th>
+                            <th>metric type</th>
+                            <th>previous reading</th>
+                            <th>current reading</th>
+                            <th>reading</th>
+                            <th>rate</th>
                             <th>amount</th>
-                            <th>staus</th>
+                            <th>status</th>
                             <th>Balance</th>
                             <th>Room Number</th>
                             <th>Tenant</th>
@@ -34,15 +61,22 @@
                     <tbody>
 
 
-                       @forelse ($bills as $bill)
+                        @forelse ($bills as $bill)
+
+
                             <tr>
                                 <th>1</th>
-                                <td>{{$bill->name}}</td>
-                                <td>{{$bill->amount}}</td>
-                                <td>{{$bill->status}}</td>
-                                <td>{{$bill->balance}}</td>
-                                <td>{{$bill->room->room_number}}</td>
-                                <td>{{$bill->room->user->name ?? 'Previos Tenant'}}</td>
+                                <td>{{ $bill->name }}</td>
+                                <td>{{ $bill->metric_type ?? '-'}}</td>
+                                <td>{{ $bill->previous_reading ?? '-' }}</td>
+                                <td>{{ $bill->current_reading ?? '-' }}</td>
+                                <td>{{ $bill->reading ?? '-' }}</td>
+                                <td>{{ $bill->metric_rate ?? '-' }}</td>
+                                <td>{{ $bill->amount }}</td>
+                                <td>{{ $bill->status }}</td>
+                                <td>{{ $bill->balance }}</td>
+                                <td>{{ $bill->room->room_number }}</td>
+                                <td>{{ $bill->room->user->name ?? 'Previos Tenant' }}</td>
                                 {{-- <td>
                                     <div class="flex items-center gap-2">
                                         <a href="{{route('pdf.bill', ['bill' => $bill->id])}}" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-700 duration-700 text-white">
@@ -54,11 +88,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td  colspan="3">
+                                <td colspan="3">
                                     <div class="flex justify-center text-gray-800">
-                                      <h1 class="text-lg">
-                                        No Bills
-                                      </h1>
+                                        <h1 class="text-lg">
+                                            No Bills
+                                        </h1>
                                     </div>
                                 </td>
                             </tr>

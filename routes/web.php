@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\AnnoucementController;
-use App\Http\Controllers\Admin\BillController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\MaintenanceController;
-use App\Http\Controllers\Admin\RoomController;
-use App\Http\Controllers\Admin\TenantController;
+use App\Models\Room;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InboxController;
-use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\BillController;
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Tenant\PaymentController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AnnoucementController;
+use App\Http\Controllers\Admin\MaintenanceController;
 use App\Http\Controllers\Tenant\AnnouncementController;
 use App\Http\Controllers\Tenant\BillController as TenantBillController;
 use App\Http\Controllers\Tenant\DashboardController as TenantDashboardController;
 use App\Http\Controllers\Tenant\MaintenanceController as TenantMaintenanceController;
-use App\Http\Controllers\Tenant\PaymentController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $rooms = Room::where('status', 'Available')->get();
+
+    return view('welcome', compact(['rooms']));
 })->name('landingPage');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

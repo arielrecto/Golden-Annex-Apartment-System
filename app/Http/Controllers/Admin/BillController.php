@@ -11,10 +11,18 @@ class BillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
+        // dd($request->all());
+
         $bills = Bill::latest()->get();
+
+        $billMonthsQuery = $request->month;
+        if($billMonthsQuery !== null){
+            $bills = Bill::whereMonth('created_at', $billMonthsQuery)->latest()->get();
+        }
+
         return view('users.admin.bill.index', compact(['bills']));
     }
 

@@ -124,4 +124,40 @@ Alpine.data("printPDF", () => ({
     },
 }));
 
+
+Alpine.data('tenantShow', () => ({
+    toggle : false,
+    spawnAdditionField : false,
+    error : null,
+    toggleAction(){
+        this.toggle = !this.toggle
+    },
+    checkNameIsNotRent(e){
+        const data = e.target.value;
+        if(data === 'rent'){
+            this.spawnAdditionField = false
+            return
+        }
+
+        this.spawnAdditionField = true
+    },
+    calculateTotalAmount(e){
+        const pReading = document.querySelector('#previous_reading').value;
+        const cReading = document.querySelector('#current_reading').value;
+        let amount = document.querySelector("#amount")
+        let reading = document.querySelector("#reading")
+
+        console.log(pReading);
+
+        if(pReading === ''){
+            this.error = 'please input previous reading first!'
+        }
+
+        reading.value = cReading - pReading
+
+        amount.value = reading.value * e.target.value;
+
+    }
+}));
+
 Alpine.start();

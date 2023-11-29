@@ -26,8 +26,8 @@
 
             <div id="element-to-print">
 
-                <div class="grid grid-flow-row grid-cols-3">
-                    <h1>
+                <div class="grid grid-flow-row grid-cols-3 h-64 gap-4 text-gray-700">
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
                         <span>
                             Name :
                             <span >
@@ -35,7 +35,55 @@
                             </span>
                         </span>
                     </h1>
-                    <h1>
+
+                    @if ($bill->name !== 'rent')
+
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
+                        <span>
+                            Name :
+                            <span >
+                                {{ $bill->metric_type }}
+                            </span>
+                        </span>
+                    </h1>
+
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
+                        <span>
+                            Previous Reading :
+                            <span >
+                                {{ $bill->previous_reading }}
+                            </span>
+                        </span>
+                    </h1>
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
+                        <span>
+                            current_reading :
+                            <span >
+                                {{ $bill->current_reading }}
+                            </span>
+                        </span>
+                    </h1>
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
+                        <span>
+                            reading :
+                            <span >
+                                {{ $bill->reading }}
+                            </span>
+                        </span>
+                    </h1>
+
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
+                        <span>
+                            Name :
+                            <span >
+                                {{ $bill->metric_rate }}
+                            </span>
+                        </span>
+                    </h1>
+
+                    @endif
+
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
                         <span>
                             Amount:
                             <span>
@@ -44,7 +92,7 @@
 
                         </span>
                     </h1>
-                    <h1>
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
                         <span>
                             Due Date: <span >
                                 {{ $bill->due_date }}
@@ -52,7 +100,7 @@
 
                         </span>
                     </h1>
-                    <h1>
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
                         <span>
                             Tenant Name: <span>
                                 {{ $bill->room->user->name }}
@@ -60,7 +108,7 @@
 
                         </span>
                     </h1>
-                    <h1>
+                    <h1 class="flex items-center bg-gray-50 justify-center rounded-lg">
                         <span>
                             Room Number: <span >
                                 {{ $bill->room->room_number }}

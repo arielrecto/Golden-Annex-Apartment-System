@@ -40,6 +40,29 @@
         <div>
             <h1 class="c-con"> Name: {{ $bill->name }}</h1>
         </div>
+
+        @if($bill->name !== 'rent')
+        <div>
+            <h1 class="c-con"> Metric Type: {{ $bill->metric_type ?? '-'}}</h1>
+        </div>
+
+        <div>
+            <h1 class="c-con"> Previous Reading: {{ $bill->previous_reading ?? '-'}}</h1>
+        </div>
+
+        <div>
+            <h1 class="c-con"> Current Reading: {{ $bill->current_reading ?? '-'}}</h1>
+        </div>
+        <div>
+            <h1 class="c-con"> Reading: {{ $bill->reading ?? '-'}}</h1>
+        </div>
+
+        <div>
+            <h1 class="c-con"> Metric Rate: {{ $bill->metric_rate ?? '-'}}</h1>
+        </div>
+
+        @endif
+
         <div>
             <h1 class="c-con">Amount:  {{ $bill->amount }} pesos</h1>
         </div>

@@ -15,6 +15,11 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('previous_reading')->nullable();
+            $table->string('current_reading')->nullable();
+            $table->string('metric_rate')->nullable();
+            $table->string('metric_type')->nullable();
+            $table->string('reading')->nullable();
             $table->string('amount');
             $table->string('status')->default('Unpaid');
             $table->string('balance');

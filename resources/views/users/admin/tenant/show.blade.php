@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <div class="w-full h-full flex flex-col gap-2 relative" x-data="{toggle: false}">
+    <div class="w-full h-full flex flex-col gap-2 relative" x-data="tenantShow">
         <h1>
             Tenant -
             <span class="font-bold text-lg text-gray-800 capitalize">
@@ -113,8 +113,7 @@
                     Bill Information
 
                 </h1>
-                <button @click="toggle = !toggle"
-                    class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
+                <button @click="toggleAction()" class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
                     <span>
                         <i class="fi fi-rr-add"></i>
                     </span>
@@ -138,16 +137,16 @@
 
 
                         @forelse ($bills as $bill)
-
                             <tr>
-                                <th>{{$bill->id}}</th>
-                                <td>{{$bill->name}}</td>
-                                <td>{{$bill->amount}}</td>
-                                <td>{{$bill->due_date}}</td>
+                                <th>{{ $bill->id }}</th>
+                                <td>{{ $bill->name }}</td>
+                                <td>{{ $bill->amount }}</td>
+                                <td>{{ $bill->due_date }}</td>
 
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <a href="{{route('admin.bill.show', ['bill' => $bill->id])}}" class="btn btn-xs btn-accent">
+                                        <a href="{{ route('admin.bill.show', ['bill' => $bill->id]) }}"
+                                            class="btn btn-xs btn-accent">
                                             <i class="fi fi-rr-eye"></i>
                                         </a>
 
@@ -174,39 +173,116 @@
 
         <div class="w-full h-full absolute z-10" x-show="toggle" @click.outside="toggle = !toggle" x-cloak>
             <div class="h-full w-full backdrop-blur-sm bg-white/30 flex items-center justify-center">
-                <form method="POST" action="{{route('admin.room.addBill', ['room' => $tenant->room->id])}}" class="w-96 h-96 rounded-lg bg-white p-4 flex flex-col shadow-lg">
+                <form method="POST" action="{{ route('admin.room.addBill', ['room' => $tenant->room->id]) }}"
+                    class="w-96 h-auto rounded-lg bg-white p-4 flex flex-col shadow-lg">
                     @csrf
                     <h1 class="font-bold text-4xl w-full text-center text-gray-800">
                         Bill
                     </h1>
                     <div class="flex flex-col gap-2">
                         <label for="">Name</label>
-                        <input type="text" class="input w-full bg-gray-100" name="name" placeholder="name">
-                        @if($errors->has('name'))
-                        <p class="text-xs text-red-500">
-                            {{$errors->first('name')}}
-                        </p>
+                        {{-- <input type="text" class="input w-full bg-gray-100" name="name" placeholder="name"> --}}
+                        <select class="select select-bordered w-full bg-gray-50" name="name" @change="checkNameIsNotRent($event)">
+                            <option disabled selected>Select</option>
+                            <option value="rent">Rent</option>
+                            <option value="electric">Electric</option>
+                            <option value="water">Water</option>
+                        </select>
+                        @if ($errors->has('name'))
+                            <p class="text-xs text-red-500">
+                                {{ $errors->first('name') }}
+                            </p>
                         @endif
                     </div>
+
+                    <template x-if="spawnAdditionField">
+
+
+                        <div class="flex w-full h-auto flex-col gap-2">
+                            <div class="flex flex-col gap-2">
+                                <label for="">Mertic Type</label>
+                                {{-- <input type="text" class="input w-full bg-gray-100" name="name" placeholder="name"> --}}
+                                <select class="select select-bordered w-full bg-gray-50" name="metric_type">
+                                    <option disabled selected>select</option>
+                                    <option value="cubic">Cubic</option>
+                                    <option value="electric">Kilowatts</option>
+                                </select>
+                                @if ($errors->has('name'))
+                                    <p class="text-xs text-red-500">
+                                        {{ $errors->first('name') }}
+                                    </p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Previous Reading</label>
+                                <input type="text" class="input w-full bg-gray-100" name="previous_reading" id="previous_reading"
+                                    placeholder="Previous Reading">
+                                    <template x-if="error !== null">
+                                        <p class="text-xs text-red-500">
+                                            <span x-text="error"></span>
+                                        </p>
+                                    </template>
+                                @if ($errors->has('previous_reading'))
+                                    <p class="text-xs text-red-500">
+                                        {{ $errors->first('previous_reading') }}
+                                    </p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Current Reading</label>
+                                <input type="text" class="input w-full bg-gray-100" name="current_reading" id="current_reading"
+                                    placeholder="Current Reading">
+                                @if ($errors->has('current_reading'))
+                                    <p class="text-xs text-red-500">
+                                        {{ $errors->first('current_reading') }}
+                                    </p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Rate</label>
+                                <input type="text" class="input w-full bg-gray-100" name="metric_rate" @change="calculateTotalAmount($event)"
+                                    placeholder="Rate">
+                                @if ($errors->has('metric_rate'))
+                                    <p class="text-xs text-red-500">
+                                        {{ $errors->first('metric_rate') }}
+                                    </p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Reading</label>
+                                <input type="text" class="input w-full bg-gray-100" name="reading" id="reading"
+                                    placeholder="Reading">
+                                @if ($errors->has('reading'))
+                                    <p class="text-xs text-red-500">
+                                        {{ $errors->first('reading') }}
+                                    </p>
+                                @endif
+                            </div>
+
+                        </div>
+                    </template>
+
+
                     <div class="flex flex-col gap-2">
                         <label for="">Amount</label>
-                        <input type="text" class="input w-full bg-gray-100" name="amount" placeholder="Amount">
-                        @if($errors->has('amount'))
-                        <p class="text-xs text-red-500">
-                            {{$errors->first('amount')}}
-                        </p>
+                        <input type="text" class="input w-full bg-gray-100" name="amount" placeholder="Amount" id="amount">
+                        @if ($errors->has('amount'))
+                            <p class="text-xs text-red-500">
+                                {{ $errors->first('amount') }}
+                            </p>
                         @endif
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="">Due Date</label>
                         <input type="date" class="input w-full bg-gray-100" name="due_date" placeholder="due_date">
-                        @if($errors->has('due_date'))
-                        <p class="text-xs text-red-500">
-                            {{$errors->first('due_date')}}
-                        </p>
+                        @if ($errors->has('due_date'))
+                            <p class="text-xs text-red-500">
+                                {{ $errors->first('due_date') }}
+                            </p>
                         @endif
                     </div>
-                    <button class="btn bg-blue-500 border-none hover:bg-blue-600 duration-700 text-white">Submit</button>
+                    <button
+                        class="btn bg-blue-500 border-none hover:bg-blue-600 duration-700 text-white">Submit</button>
                 </form>
             </div>
         </div>

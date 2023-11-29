@@ -25,6 +25,7 @@
                             <th>Description</th>
                             <th>time</th>
                             <th>Room Number</th>
+                            <th>Status</th>
                             {{-- <th>Status</th>
                             <th>Tenant</th>
                             <th>Household People</th> --}}
@@ -47,6 +48,7 @@
                                 <td>{{ $maintenance->description }}</td>
                                 <td>{{ $maintenance->time }}</td>
                                 <td>{{ $maintenance->room->room_number }}</td>
+                                <td>{{ $maintenance->status }}</td>
 
                                 <td>
                                     <div class="flex items-center">

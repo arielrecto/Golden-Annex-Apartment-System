@@ -12,6 +12,11 @@ class Bill extends Model
 
     protected $fillable = [
         'name',
+        'previous_reading',
+        'current_reading',
+        'metric_rate',
+        'metric_type',
+        'reading',
         'amount',
         'status',
         'balance',

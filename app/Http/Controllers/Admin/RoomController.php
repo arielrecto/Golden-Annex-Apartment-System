@@ -93,6 +93,11 @@ class RoomController extends Controller
             'name' => $request->name,
             'amount' => $request->amount,
             'due_date' => $request->due_date,
+            'previous_reading' => $request->previous_reading ?? null,
+            'current_reading' => $request->current_reading  ?? null,
+            'reading' => $request->reading ?? null,
+            'metric_rate' => $request->metric_rate ?? null,
+            'metric_type' => $request->metric_type ?? null,
             'status' => 'Unpaid',
             'balance' => $request->amount,
             'room_id' => $room->id

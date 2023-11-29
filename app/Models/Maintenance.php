@@ -14,8 +14,9 @@ class Maintenance extends Model
         'description',
         'time',
         'image',
-        'room_id'
-    ];
+        'room_id',
+        'status'
+];
 
 
     public function room () {

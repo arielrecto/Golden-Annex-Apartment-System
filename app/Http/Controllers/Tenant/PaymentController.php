@@ -38,8 +38,8 @@ class PaymentController extends Controller
         $bill = Bill::find($request->bill_id);
 
 
-        if($request->amount > $bill->amount){
-            return back()->with(['reject' => 'Payment Amount is Exceed in Bill amount']);
+        if($request->amount > $bill->balance){
+            return back()->with(['reject' => 'Payment Amount is Exceed in Bill balance']);
         }
 
 

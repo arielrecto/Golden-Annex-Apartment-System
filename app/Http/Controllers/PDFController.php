@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use Barryvdh\DomPDF\PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PDFController extends Controller
@@ -30,14 +31,25 @@ class PDFController extends Controller
         return $this->pdf->download('bill.pdf');
     }
 
-    public function billsPDF()
+    public function billsPDF(Request $request)
     {
+
+       $month = $request->month;
+
+
         $bills = Bill::with(['room'])->get();
+
+        if($month !== null){
+            $bills = Bill::whereMonth('created_at', $month)->get();
+        }
+
+
 
         $data = [
             'title' => 'Bills',
             'date' => date('d/m/Y'),
             'bills' => $bills,
+            'month' => $month !== null ? Carbon::create()->month($month)->format('F') : null
         ];
 
         $this->pdf->loadView('pdf.billsList', $data);
