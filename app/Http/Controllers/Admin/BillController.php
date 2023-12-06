@@ -19,9 +19,19 @@ class BillController extends Controller
         $bills = Bill::latest()->get();
 
         $billMonthsQuery = $request->month;
+
+        $billName = $request->name;
+
+
         if($billMonthsQuery !== null){
             $bills = Bill::whereMonth('created_at', $billMonthsQuery)->latest()->get();
         }
+
+
+        if($billName !== null && $billMonthsQuery !== null){
+            $bills = Bill::where('name', $billName)->whereMonth('created_at', $billMonthsQuery)->latest()->get();
+        }
+
 
         return view('users.admin.bill.index', compact(['bills']));
     }

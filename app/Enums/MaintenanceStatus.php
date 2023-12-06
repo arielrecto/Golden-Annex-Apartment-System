@@ -8,4 +8,5 @@ enum MaintenanceStatus:string{
     case PROCESSING = 'Processing';
     case DONE = 'Done';
     case REJECT = 'Reject';
+    case ACCEPT = 'Accept';
 }

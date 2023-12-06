@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\MaintenanceStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
@@ -47,7 +48,17 @@ class MaintenanceController extends Controller
 
         if($status !== null){
 
-            $maintenance->update(['status' => $status]);
+            $massage =  'Available Date: '. $request->date  . ' ' . $request->message;
+
+            if(MaintenanceStatus::ACCEPT->value === $status){
+                $massage = "Your Request is Accepted";
+            }
+
+
+            $maintenance->update([
+                'status' => $status,
+                'status_message' => $massage
+            ]);
 
 
 

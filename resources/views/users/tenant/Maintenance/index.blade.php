@@ -26,6 +26,7 @@
                             <th>time</th>
                             <th>Room Number</th>
                             <th>Status</th>
+
                             {{-- <th>Status</th>
                             <th>Tenant</th>
                             <th>Household People</th> --}}
@@ -49,10 +50,16 @@
                                 <td>{{ $maintenance->time }}</td>
                                 <td>{{ $maintenance->room->room_number }}</td>
                                 <td>{{ $maintenance->status }}</td>
+                                @if ($maintenance->status !== null)
+                                    <td>{{ $maintenance->status_message }}</td>
+                                @endif
 
                                 <td>
-                                    <div class="flex items-center">
+                                    <div class="flex items-center space-x-2">
+                                        <a href="{{route('tenant.maintenance.show', ['maintenance' => $maintenance->id])}}" class="btn btn-xs btn-accent">
+                                            <i class="fi fi-rr-eye"></i>
 
+                                        </a>
                                         <form
                                             action="{{ route('tenant.maintenance.destroy', ['maintenance' => $maintenance->id]) }}"
                                             method="post">

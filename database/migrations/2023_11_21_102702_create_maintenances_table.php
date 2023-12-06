@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image');
             $table->foreignIdFor(Room::class)->constrained()->onDelete('cascade');
             $table->string('status')->default(MaintenanceStatus::PENDING->value);
+            $table->string('status_message')->nullable();
             $table->string('time');
             $table->timestamps();
         });

@@ -22,10 +22,18 @@
                         <option value="11">November</option>
                         <option value="12">December</option>
                       </select>
+
+
+                      <select class="select select-bordered w-full bg-gray-50" name="name" @change="checkNameIsNotRent($event)">
+                        <option disabled selected>Select</option>
+                        <option value="rent">Rent</option>
+                        <option value="electric">Electric</option>
+                        <option value="water">Water</option>
+                    </select>
                       <button class="btn btn-accent">Filter</button>
                 </form>
             </div>
-            <a href="{{ route('pdf.bills.download') }}?month={{Request::get('month')}}"
+            <a href="{{ route('pdf.bills.download') }}?month={{Request::get('month')}}?&name={{Request::get('name')}}"
                 class="btn btn-xs bg-blue-500 border-none hover:bg-blue-600 text-white">
                 <span>
                     <i class="fi fi-rr-print"></i>

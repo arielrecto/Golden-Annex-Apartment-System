@@ -72,9 +72,22 @@ class MaintenanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $maintenance = Maintenance::find($id);
+        $status = $request->status;
+
+        if($status !== null){
+
+            $maintenance->update([
+                'status' => $status,
+                'status_message' => null
+            ]);
+        }
+
+
+
+        return view('users.tenant.Maintenance.show', compact(['maintenance']));
     }
 
     /**

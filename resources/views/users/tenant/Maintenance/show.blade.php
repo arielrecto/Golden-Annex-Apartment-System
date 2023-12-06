@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-tenant-layout>
     <div class="w-full h-full flex flex-col gap-2 relative" x-data="{ toggle: false }">
 
         @if (Session::has('message'))
@@ -19,16 +19,19 @@
                 </span>
             </h1>
 
-            @if ($maintenance->status === App\Enums\MaintenanceStatus::PENDING->value)
+            @if ($maintenance->status === App\Enums\MaintenanceStatus::PENDING->value || ($maintenance->status !== App\Enums\MaintenanceStatus::DONE->value && $maintenance->status !== App\Enums\MaintenanceStatus::REJECT->value))
                 <div class="flex items-center w-auto gap-2">
-                    <form action="{{ route('admin.maintenance.show', ['maintenance' => $maintenance->id]) }}"
+                    <form action="{{ route('tenant.maintenance.show', ['maintenance' => $maintenance->id]) }}"
                         method="GET">
-                        <input type="hidden" name="status" value="{{ App\Enums\MaintenanceStatus::ACCEPT->value }}">
-                        <button class="btn btn-accent btn-xs">ACCEPT</button>
+                        <input type="hidden" name="status" value="{{ App\Enums\MaintenanceStatus::DONE->value }}">
+                        <button class="btn btn-accent btn-xs">Done</button>
                     </form>
 
-
-                    <button class="btn btn-error btn-xs" @click="toggle = !toggle">REJECT</button>
+                    <form action="{{ route('tenant.maintenance.show', ['maintenance' => $maintenance->id]) }}"
+                        method="GET">
+                        <input type="hidden" name="status" value="{{ App\Enums\MaintenanceStatus::PROCESSING->value }}">
+                        <button class="btn btn-primary btn-xs">Processing</button>
+                    </form>
 
                 </div>
             @endif
@@ -53,23 +56,6 @@
                         {{ $maintenance->description }}
                     </p>
                 </div>
-            </div>
-
-            <div x-show="toggle"
-                class="w-1/2 h-auto bg-gray-100 shadow-lg absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg p-5"
-                x-cloak @click.outside="toggle = !toggle">
-
-                <form action="{{ route('admin.maintenance.show', ['maintenance' => $maintenance->id]) }}" method="GET"
-                    class="flex flex-col space-y-5">
-                    <h1 class="w-full text-center font-bold capitalize">Reason</h1>
-                    <h1>Avaible Date</h1>
-                    <input type="date" name="date" class="w-full input input-accent bg-gray-200">
-                    <textarea class="textarea textarea-accent bg-gray-200" name="message" placeholder="message">
-
-                    </textarea>
-                    <input type="hidden" name="status" value="{{ App\Enums\MaintenanceStatus::REJECT->value }}">
-                    <button class="btn btn-error btn-xs">REJECT</button>
-                </form>
             </div>
         </div>
 </x-admin-layout>

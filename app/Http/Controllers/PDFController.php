@@ -36,23 +36,33 @@ class PDFController extends Controller
 
        $month = $request->month;
 
+       $billName = $request->name;
+
+
 
         $bills = Bill::with(['room'])->get();
 
+
         if($month !== null){
-            $bills = Bill::whereMonth('created_at', $month)->get();
+            $bills = Bill::whereMonth('created_at', $month)->where('status', 'Paid')->orderBy('due_date', 'asc')->get();
         }
 
 
+        if($billName !== null && $month !== null){
+            $bills = Bill::where('name', $billName)->whereMonth('created_at', $month)->where('status', 'Paid')->orderBy('due_date', 'asc')->get();
+        }
+
+        $total = collect($bills)->pluck('amount')->sum();
 
         $data = [
             'title' => 'Bills',
             'date' => date('d/m/Y'),
             'bills' => $bills,
+            'total' => $total,
             'month' => $month !== null ? Carbon::create()->month($month)->format('F') : null
         ];
 
-        $this->pdf->loadView('pdf.billsList', $data);
+        $this->pdf->loadView('pdf.billsList', $data)->setPaper('a4', 'landscape');
 
         return $this->pdf->download('bills.pdf');
     }

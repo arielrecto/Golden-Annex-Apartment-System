@@ -15,7 +15,8 @@ class Maintenance extends Model
         'time',
         'image',
         'room_id',
-        'status'
+        'status',
+        'status_message'
 ];
 
 
